@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recently Added Comics</title>
+    <style>
+        /* Dark mode color palette */
+        body {
+            font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+            color: #D1D1D1;
+            -webkit-font-smoothing: antialiased;
+            font-size: 14px;
+            line-height: 1.4;
+            margin: 0;
+            padding: 0;
+            -ms-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%;
+            background: #1E1E1E;
+        }
+
+        div.main-container {
+            width: fit-content;
+            margin: auto;
+            display: flex;
+            flex-direction: row;
+            text-align: left;
+        }
+
+        ul.card-list {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: flex-start;
+            align-content: flex-start;
+        }
+
+        li {
+            list-style-type: none;
+        }
+
+        /* Card styling */
+        .comic-card {
+            border: 1px solid #2C2C2C;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: 400px;
+        }
+
+        .comic-thumbnail {
+            max-width: 100px;
+            height: auto;
+            margin-right: 10px;
+        }
+
+        .comic-details {
+            flex-grow: 1;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        /* Heading styles */
+        h1,
+        h2,
+        h3,
+        h4 {
+            color: #ffffff;
+            font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+            font-weight: 400;
+            margin: 0;
+        }
+
+        p,
+        ul,
+        ol {
+            font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+            font-weight: 400;
+            margin: 0;
+        }
+
+        p li,
+        ul li,
+        ol li {
+            list-style-position: inside;
+            margin-left: 5px;
+        }
+
+        a {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+<h1>Recently Added Comics</h1>
+<hr/>
+<div class="main-container">
+    <div>
+        <ul class="card-list">
+            <h2>Latest Series</h2>
+            {{#each series}}
+                <li>
+                    <div class="comic-card">
+                        <a href="{{ @root.public_url }}/series/{{ id }}">
+                            <img class="comic-thumbnail"
+                                 src="/recently_added/{{ @root.date }}/thumbnails/series-{{ id }}.jpg"
+                                 alt="{{ name }} Thumbnail">
+                        </a>
+                        <div class="comic-details">
+                            <h3>
+                                <a href="{{ @root.public_url }}/series/{{ id }}">
+                                    {{ name }}
+                                </a>
+                            </h3>
+                            <p>DATE ADDED: {{ created }} </p>
+                            <p>ISSUE COUNT: {{ booksCount }}</p>
+                            <p>PUBLISHER: {{ metadata.publisher }}</p>
+                        </div>
+                    </div>
+                </li>
+            {{/each}}
+        </ul>
+    </div>
+    <div>
+        <ul class="card-list">
+            <h2>Latest Issues</h2>
+            {{#each issues}}
+                <li>
+                    <div class=" comic-card">
+                        <a href="{{ @root.public_url }}/book/{{ id }}">
+                            <img class="comic-thumbnail"
+                                 src="/recently_added/{{ @root.date }}/thumbnails/book-{{ id }}.jpg"
+                                 alt="{{ seriesTitle }} {{ number }} Thumbnail"/>
+                        </a>
+                        <div class="comic-details">
+                            <h3>
+                                <a href="{{ @root.public_url }}/book/{{ id }}">
+                                    {{ seriesTitle }} #{{ number }}
+                                </a>
+                            </h3>
+                            <p>TITLE: {{ metadata.title }}</p>
+                            {{#if metadata.releaseDate}}
+                                <p>RELEASE DATE: {{ metadata.releaseDate }}</p>
+                            {{/if}}
+                            <p>PUBLISHER: {{ metdata.publisher }}</p>
+                            <p>LINKS: {{#each metadata.links}}<a href="{{ url }}">{{ label }}</a> {{/each}}</p>
+                        </div>
+                    </div>
+                </li>
+                </a>
+            {{/each}}
+        </ul>
+    </div>
+</div>
+</body>
+</html>

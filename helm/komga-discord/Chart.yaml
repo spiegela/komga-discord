@@ -1,0 +1,22 @@
+apiVersion: v2
+appVersion: "0.1.0"
+dependencies:
+  - name: common
+    repository: oci://tccr.io/truecharts
+    version: 17.2.21
+deprecated: false
+home: https://github.com/spiegela/komga-discord
+keywords:
+  - komga-discord
+  - komga
+  - discord
+kubeVersion: ">=1.16.0-0"
+maintainers:
+  - email: spiegela@gmail.com
+    name: Aaron Spiegel
+name: komga-discord
+description: Komga Discord Bot
+sources:
+  - https://github.com/spiegela/komga-discord
+type: application
+version: 0.1.0

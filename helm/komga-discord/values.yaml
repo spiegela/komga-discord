@@ -1,0 +1,75 @@
+image:
+  repository: spiegela/komga-discord-bot
+  pullPolicy: IfNotPresent
+  tag: latest
+
+komga:
+  url:
+  username:
+  password:
+  libraries:
+
+discord:
+  token:
+
+newsletters:
+  url:
+
+workload:
+  main:
+    podSpec:
+      containers:
+        main:
+          env:
+            ROCKET_ADDRESS: 0.0.0.0
+
+service:
+  main:
+    enabled: true
+    type: ClusterIP
+    port: 8000
+
+persistence:
+  newsletters:
+    enabled: true
+    type: pvc
+    objectName: main
+    expandObjectName: true
+    optional: false
+    defaultMode: "0755"
+    mountPath: /newsletters
+  config:
+    enabled: true
+    type: secret
+    objectName: config
+    expandObjectName: true
+    optional: false
+    defaultMode: "0755"
+    mountPath: /config
+
+portal:
+  open:
+    enabled: false
+
+secret:
+  main:
+    enabled: true
+    data:
+      config.toml: |-
+        [komga]
+        url = {{ .Values.komga.url | required "komga.url is required" | quote }}
+        username = {{ .Values.komga.username | required "komga.username is required" | quote }}
+        password = {{ .Values.komga.password | required "komga.password is required" | quote }}
+        {{- if .Values.komga.libraries }}
+        libraries = [{{- range $index, $element := .Values.komga.libraries }}
+          {{- if $index }}, {{- end }}
+          {{- $element | quote }}
+        {{- end }}]
+        {{- end }}
+        [discord]
+        token = {{ .Values.discord.token | required "discord.token is required" | quote }}
+        {{- if .Values.discord.role }}
+        role = {{ .Values.discord.role | quote }}
+        {{- end }}
+        [newsletters]
+        url = {{ .Values.newsletters.url | required "newsletters.url is required" | quote }}
