@@ -58,10 +58,15 @@ async fn komga_recently_added_thumbnail(
     NamedFile::open(&path).await.map_err(|e| NotFound(e.to_string()))
 }
 
+#[get("/")]
+async fn healthz() -> &'static str {
+    "OK"
+}
+
 async fn rocket(settings: &Settings) -> Result<Rocket<Ignite>, anyhow::Error> {
     rocket::build()
         .manage(settings.newsletters.content_dir.clone())
-        .mount("/", routes![komga_recently_added, komga_recently_added_thumbnail])
+        .mount("/", routes![healthz, komga_recently_added, komga_recently_added_thumbnail])
         .launch().await
         .map_err(|e| anyhow::anyhow!(e))
 }
