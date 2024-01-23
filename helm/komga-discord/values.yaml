@@ -1,7 +1,7 @@
 image:
   repository: spiegela/komga-discord-bot
   pullPolicy: IfNotPresent
-  tag: latest
+  tag: 0.1.1
 
 komga:
   url:
@@ -56,7 +56,35 @@ secret:
     expandObjectName: true
     enabled: true
     data:
-      config.toml: |-
+      default.toml: |-
+        [komga]
+        # Komga URL
+        url = "http://localhost:25600"
+        # Title to use for Komga Site
+        site_title = "Komga"
+        [newsletters]
+        enabled = true
+        # Default templates directory
+        templates_dir = "templates"
+        # Default rendered newsletters directory
+        content_dir = "newsletters"
+        # Default newsletter URL, if used outside your local network, be sure to configure this to an external URL
+        url = "http://localhost:8000"
+        # Default newsletter Discord channel
+        channel = "general"
+        # Newsletter notification schedule. Default is every Wednesday at 11:00 AM
+        # format is different from standard CRON:
+        #                  sec   min   hour   day of month   month   day of week   year
+        schedule = "0 0 11 * * Wed *"
+        [stats]
+        enabled = true
+        # Category to use for stats
+        category = "Comics Stats"
+        # Stats update schedule. Default is every Wednesday at 11:00 AM
+        # format is different from standard CRON:
+        #                  sec   min   hour   day of month   month   day of week   year
+        schedule = "0 5 * * * * *"
+      local.toml: |-
         [komga]
         url = {{ .Values.komga.url | required "komga.url is required" | quote }}
         username = {{ .Values.komga.username | required "komga.username is required" | quote }}
