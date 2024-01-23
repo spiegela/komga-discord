@@ -25,9 +25,9 @@ workload:
 
 service:
   main:
-    enabled: true
-    type: ClusterIP
-    port: 8000
+    ports:
+      main:
+        port: 8000
 
 persistence:
   newsletters:
@@ -41,7 +41,7 @@ persistence:
   config:
     enabled: true
     type: secret
-    objectName: config
+    objectName: main
     expandObjectName: true
     optional: false
     defaultMode: "0755"
@@ -53,6 +53,7 @@ portal:
 
 secret:
   main:
+    expandObjectName: true
     enabled: true
     data:
       config.toml: |-
@@ -73,3 +74,27 @@ secret:
         {{- end }}
         [newsletters]
         url = {{ .Values.newsletters.url | required "newsletters.url is required" | quote }}
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 500Mi
+  requests:
+    cpu: 100m
+    memory: 100Mi
+
+ixChartContext:
+  addNvidiaRuntimeClass: false
+  hasNFSCSI: true
+  hasSMBCSI: true
+  isInstall: true
+  isUpdate: false
+  isUpgrade: false
+  kubernetes_config:
+    cluster_cidr: 172.16.0.0/16
+    cluster_dns_ip: 172.17.0.10
+    service_cidr: 172.17.0.0/16
+  nfsProvisioner: nfs.csi.k8s.io
+  nvidiaRuntimeClassName: nvidia
+  operation: UPDATE
+  smbProvisioner: smb.csi.k8s.io
